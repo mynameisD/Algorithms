@@ -11,9 +11,11 @@ public class Subset {
         while (!StdIn.isEmpty()){
             q.enqueue(StdIn.readString());  
         }
-        Iterator<String> qI=q.iterator();  
+        while (q.size() > N){
+            q.dequeue();  
+        }
         for (int i = 0; i < N; i++) {
-            StdOut.println(qI.next());
+            StdOut.println(q.dequeue());
         }
     }
 }

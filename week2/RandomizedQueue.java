@@ -53,7 +53,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         return new QueueIterator();
     }
     
-    public class QueueIterator implements Iterator<Item> {
+    private class QueueIterator implements Iterator<Item> {
        
         private int length; 
         private Item[] newArray;    

@@ -29,7 +29,7 @@ public class Deque<Item> implements Iterable<Item> {
     }
     
     public void addFirst(Item item) {
-        if(item == null) throw new NoSuchElementException("Attempts to add a null item");  
+        if(item == null) throw new NullPointerException("Attempts to add a null item");  
         Node newFirst = new Node();  
         first.item = item;  
         first.prev = newFirst;  
@@ -39,7 +39,7 @@ public class Deque<Item> implements Iterable<Item> {
     }
     
     public void addLast(Item item) {
-        if(item == null) throw new NoSuchElementException("Attempts to add a null item");          
+        if(item == null) throw new NullPointerException("Attempts to add a null item");          
         Node newLast = new Node();  
         last.item = item;  
         last.next = newLast;  
@@ -49,7 +49,7 @@ public class Deque<Item> implements Iterable<Item> {
     }
     
     public Item removeFirst() {
-        if(isEmpty()) throw new UnsupportedOperationException("dequeue from an empty list");  
+        if(isEmpty()) throw new NoSuchElementException("dequeue from an empty list");  
         Item item = first.next.item;  
         first.next = first.next.next;  
         first.next.prev = first;  
@@ -58,7 +58,7 @@ public class Deque<Item> implements Iterable<Item> {
     }
     
     public Item removeLast() {
-        if(isEmpty()) throw new UnsupportedOperationException("dequeue from an empty list");  
+        if(isEmpty()) throw new NoSuchElementException("dequeue from an empty list");  
         Item item = last.prev.item;
         last.prev = last.prev.prev;  
         last.prev.next = last;  
