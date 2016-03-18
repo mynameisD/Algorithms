@@ -20,9 +20,12 @@ public class BruteCollinearPoints {
     
     public BruteCollinearPoints(Point[] points) {
         // finds all line segments containing 4 points
+        if(points == null) throw new NullPointerException("illegal input arguments");  
         int N = points.length;  
         for(int i = 0; i < N; i++) {
+            if(points[i] == null) throw new NullPointerException("null point detected");  
             for(int j = i+1; j < N; j++) {
+                if(points[i].slopeTo(points[j]) == Double.NEGATIVE_INFINITY) throw new IllegalArgumentException("Repeated Points");  
                 for(int k = j+1; k < N; k++) {
                     for(int l = k+1; l < N; l++) {
                         if(points[i].slopeTo(points[j]) == points[i].slopeTo(points[k]) 
@@ -55,30 +58,34 @@ public class BruteCollinearPoints {
         } 
         return array;  
     }
-    
+
     public static void main(String[] args) {
-        StdOut.println("How many points would like to input?");  
-        int N = StdIn.readInt();
         
-        Point[] p = new Point[N];  
-        StdDraw.setPenRadius(0.05);
-        StdDraw.setPenColor(StdDraw.BLUE);
-        StdDraw.setXscale(-10, 10);
-        StdDraw.setYscale(-10, 10);
-        
-        for(int i = 0; i < N; i++) {
-            int x = StdIn.readInt();  
-            int y = StdIn.readInt();  
-            p[i] = new Point(x,y);  
-            p[i].draw();  
+        // read the N points from a file
+        In in = new In(args[0]);
+        int N = in.readInt();
+        Point[] points = new Point[N];
+        for (int i = 0; i < N; i++) {
+            int x = in.readInt();
+            int y = in.readInt();
+            points[i] = new Point(x, y);
         }
         
-        StdDraw.setPenColor(StdDraw.MAGENTA);
-        StdDraw.setPenRadius(0.02);
-        BruteCollinearPoints collinearpoints = new BruteCollinearPoints(p);  
-        LineSegment[] line = collinearpoints.segments();  
-        for(int i = 0; i < collinearpoints.N_segments; i++) {
-            line[i].draw();  
+        // draw the points
+        StdDraw.show(0);
+        StdDraw.setXscale(0, 32768);
+        StdDraw.setYscale(0, 32768);
+        for (Point p : points) {
+            p.draw();
+        }
+        StdDraw.show();
+        
+        // print and draw the line segments
+        BruteCollinearPoints collinear = new BruteCollinearPoints(points);
+        for (LineSegment segment : collinear.segments()) {
+            StdOut.println(segment);
+            segment.draw();
         }
     }
+
 }
