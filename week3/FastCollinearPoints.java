@@ -16,17 +16,21 @@ public class FastCollinearPoints {
     public FastCollinearPoints(Point[] points) {
         // finds all line segments containing 4 or more points
         if(points == null) throw new NullPointerException("illegal input arguments"); 
-        int N = points.length;
-        for(int i = 0; i < N; i++) {
+        for(int i = 0; i < points.length; i++) {
             if(points[i] == null) throw new NullPointerException("null point detected");  
-            if(i > 1 && points[i].compareTo(points[i-1]) == 0) throw new IllegalArgumentException("Repeated Points");
-        }
+	    for(int j = i+1; j< points.length; j++) {
+		if(points[i].compareTo(points[j]) == 0) 
+		    throw new IllegalArgumentException("Repeated Points");
+	    }
+        }        
+
+        int N = points.length;
           
         Point[] copy = Arrays.copyOf(points, N);  
         lines = new ArrayList<LineSegment>();  
         
         Arrays.sort(copy, new PointComparator());  //sort the orign array by x,y cordinate;
-        
+
         for(int i = 0; i < N; i++) {
             Point[] temp = Arrays.copyOf(copy, N); 
             Arrays.sort(temp, copy[i].slopeOrder());  
