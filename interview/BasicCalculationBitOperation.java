@@ -13,7 +13,6 @@ public class BasicCalculationBitOperation {
  
     private int pos_multiple(int a, int b){
 	long ans = 0;
-	if (a < 0)
 	while (b!=0) {
 	    if ((b&1) != 0)
 		ans += a;
@@ -35,18 +34,69 @@ public class BasicCalculationBitOperation {
 	}
 	return ans;
     }
+
+    private int multiple(int a, int b) {
+	if (isZero(a) || isZero(b))
+	    return 0;
+	else if (isNegative(a)) {
+	    if (isNegative(b)) {
+		return pos_multiple(toNegative(a),toNegative(b));
+	    }
+	    else {
+		return toNegative(pos_multiple(toNegative(a),b));
+	    }
+	}
+
+	else if (isNegative(b)) {
+	    return toNegative(pos_multiple(a,toNegative(b)));
+	}
+	else {
+	    return pos_multiple(a,b);
+	}
+    }
+
+    private int divide(int a, int b) {
+	if (isZero(a))
+	    return 0;
+	if (isZero(b))
+	    throw new ArithmeticException("divide by zero");
+	if (isNegative(a)) {
+	    if (isNegative(b)) {
+		return pos_divide(toNegative(a),toNegative(b));
+	    }
+	    else {
+		return toNegative(pos_divide(toNegative(a),b));
+	    }
+	}
+
+	else if (isNegative(b)) {
+	    return toNegative(pos_divide(a,toNegative(b)));
+	}
+	else {
+	    return pos_divide(a,b);
+	}
+    }
+
+    private boolean isNegative(int a) {
+	return (a&0x80000000) != 0;
+    }
+    private int toNegative(int a) {
+	return ~a + 1;
+    }
+
+    private boolean isZero(int a) {
+	return (a&0xffffffff) == 0;
+    }
+
+
     public static void main(String[] args) {
+	System.out.println("Basic arithmatic calculation '+-*/' with purely bit operations");
 	BasicCalculationBitOperation calculator = new BasicCalculationBitOperation();
-	System.out.println(Integer.toString(calculator.add(5,-5)));
-	System.out.println(Integer.toString(calculator.multiple(2,-22)));
-	System.out.println(Integer.toString(calculator.pos_divide(5,2)));
-	System.out.println(Integer.toString(-1/2));
-	System.out.println(Integer.toString(!2));
-	/*
-	switch (choice) {
-	case 1: 
-	System.out.println(Integer.toBinaryString(5)+" + "+Integer.toBinaryString(-4));
-	System.out.println(Integer.toString(5-4)+ " " + Integer.toString(calculator.add(5,-4)));
-	*/
+	System.out.println(calculator.multiple(-11,-5));
+	System.out.println(calculator.divide(10,2));
+	System.out.println(calculator.divide(-5,2));
+	System.out.println(calculator.divide(20,-4));
+	System.out.println(calculator.divide(21,-4));
+	System.out.println(calculator.divide(-2,-10));
     }
 }
